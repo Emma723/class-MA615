@@ -1,0 +1,119 @@
+---
+title: "HW2 for 615"
+author: "Qixuan Zhang"
+date: "9/22/2018"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```
+
+#Exercise 
+
+```{r}
+library(tidyverse)
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl)) +
+facet_grid(drv ~ cyl)
+
+# Empty cells meaning:Becasue there is no combination of two variables in the original dataset. 
+```
+3
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+
+#"." means that we prefer to no facet in the rows or columns.
+```
+3.6.1
+6. Recreat the graphs
+```{r}
+graphic1<-ggplot(data = mpg, mapping = aes(x=displ, y=hwy)) + geom_point()+ geom_smooth()
+graphic1
+graphic2<-ggplot(data = mpg, mapping = aes(x=displ, y=hwy,group = drv)) + geom_point()+ geom_smooth()
+graphic2
+graphic3<-ggplot(data = mpg, mapping = aes(x=displ, y =hwy,color = drv, group = drv))+geom_point()+geom_smooth()
+graphic3
+graphic4 <-ggplot(data = mpg, mapping = aes(x=displ, y =hwy))+geom_point(aes(color=drv))+geom_smooth(se=FALSE)
+graphic5<- ggplot(data = mpg, mapping = aes(x=displ, y =hwy,color = drv, group = drv))+geom_point() +geom_smooth(aes(linetype=drv),se=FALSE)
+graphic6<-ggplot(data = mpg, mapping = aes(x=displ, y =hwy, group=drv))+geom_point(size=4,color="white")+geom_point(aes(color=drv))
+
+```
+
+
+
+5.2
+```{r}
+library(nycflights13)
+library(tidyverse)
+
+#1.1
+a<-filter(flights, arr_delay>=120)
+a
+#1.2
+filter(flights, dest == 'IAH' | dest == 'HOU')
+filter(flights, dest %in% c('IAH', 'HOU'))
+#1.3
+filter(flights, carrier == 'UA' | carrier == 'AA' | carrier == 'DL')
+filter(flights, carrier %in% c('UA', 'AA', 'DL'))
+#1.4
+filter(flights, month >= 7 & month <= 9)
+filter(flights, month %in% c(7, 8, 9))
+#1.5
+filter(flights, arr_delay > 120, dep_delay <= 0)
+#1.6
+filter(flights, dep_delay >= 60, dep_delay-arr_delay > 30)
+#1.7
+filter(flights, dep_time <=600 | dep_time == 2400)
+
+
+
+```
+2
+```{r}
+filter(flights, between(month, 7, 9))
+filter(flights, !between(dep_time, 601, 2359))
+```
+3
+```{r}
+summary(flights)
+```
+4
+```{r}
+#NA ^ 0 evaluates to 1 because anything to the power of 0 is 1, so although we didn't know the original value, we know it's being taken to the zeroth power.
+
+#With NA | TRUE, since the | operator returns TRUE if either of the terms are true, the whole expression returns true because the right half returns true. This is easier to see in an expression like NA | 5<10 (since 5 is indeed less than 10).
+
+#For the next example, we know that & returns TRUE when both terms are true. So, for example, TRUE & TRUE evaluates to TRUE. In FALSE & NA, one of the terms is false, so the expression evaluates to FALSE. As does something like FALSE & TRUE.
+
+#NA * 0 could be argued to be because the NA could represent Inf, and Inf * 0 is NaN (Not a Number), rather than NA. However, I suspect that these results are dictated as much by what answer is natural, quick and sensible in C as by mathematical edge cases.
+
+
+```
+
+
+```{r}
+library(ggplot2)
+plot(LakeHuron)
+# Deal with the data's format
+Time<-c(1875:1972)
+# Plot with scatters
+ggplot(data = as.data.frame(LakeHuron),mapping = aes(x=Time,y=LakeHuron))+geom_point()
+# Plot with lines
+ggplot(data = as.data.frame(LakeHuron),mapping = aes(x=Time,y=LakeHuron))+geom_point()+geom_line(color="red")
+# Plot with smoother
+ggplot(data = as.data.frame(LakeHuron),mapping = aes(x=Time,y=LakeHuron))+geom_point()+geom_line(color="blue")+geom_smooth(stat = "smooth",color="red",se=F)
+```
+
